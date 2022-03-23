@@ -74,8 +74,9 @@ const Login = () => {
 
             let data = await response.json();
             localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
 
-            alert('login successfully added!');
+            // alert('login successfully added!');
             setValues({
                 username: '', password: ''
             });

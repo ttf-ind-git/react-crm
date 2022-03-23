@@ -15,6 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -40,6 +42,17 @@ import { useHistory } from 'react-router';
 const AdminNavbar = (props) => {
 
   const history = useHistory();
+
+  const [name, setName] = useState();
+
+  useEffect(()=> {
+      if(localStorage.getItem('user')){
+          let user = localStorage.getItem('user')
+          let json = JSON.parse(user)
+          // alert(json['username'])
+          setName(json['username'])
+      }
+  })
 
   const Logout = (e) => {
     e.preventDefault();
@@ -86,7 +99,7 @@ const AdminNavbar = (props) => {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Jessica Jones
+                      { name }
                     </span>
                   </Media>
                 </Media>
