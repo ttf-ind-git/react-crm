@@ -23,12 +23,21 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 
+import Orders from "views/examples/Orders.js";
+
 var routes = [
   {
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
+    layout: "/admin",
+  },
+  {
+    path: "/orders",
+    name: "Orders",
+    icon: "fas fa-truck text-red",
+    component: Orders,
     layout: "/admin",
   },
   {
@@ -73,5 +82,6 @@ var routes = [
     component: Register,
     layout: "/auth",
   },
+ 
 ];
 export default routes;
