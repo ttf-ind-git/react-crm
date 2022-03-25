@@ -23,7 +23,9 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 
-import Orders from "views/examples/Orders.js";
+import Orders from "views/examples/Order/Orders.js";
+import Update_Order from "views/examples/Order/Update.js";
+import Products from "views/examples/Product/Products.js";
 
 var routes = [
   {
@@ -38,6 +40,13 @@ var routes = [
     name: "Orders",
     icon: "fas fa-truck text-red",
     component: Orders,
+    layout: "/admin",
+  },
+  {
+    path: "/products",
+    name: "Products",
+    icon: "fa fa-shopping-basket text-yellow",
+    component: Products,
     layout: "/admin",
   },
   {

@@ -18,6 +18,12 @@ import {
     Container,
     Row,
     UncontrolledTooltip,
+    Button,
+    CardBody,
+    FormGroup,
+    Form,
+    Input,
+    Col,
   } from "reactstrap";
   // core components
   import Header from "components/Headers/Header.js";
@@ -28,6 +34,7 @@ import {
   const Orders = () => {
 
     const [orders, setOrders] = useState([]);
+    const [page, setpage] = useState(1);
 
     useEffect(() => {
 
@@ -35,7 +42,7 @@ import {
    
          const data = 'Token '+localStorage.getItem('token');
    
-         let response = await fetch('http://127.0.0.1:8000/api/order-list/', {
+         let response = await fetch('http://127.0.0.1:8000/api/order-list', {
            method: 'GET',
            headers : {
                'Content-Type': 'application/json',
@@ -45,9 +52,11 @@ import {
    
          let result = await response.json();
          let array = result.results;
-         console.log(array);
+         let page_count = result.count
+         console.log(result.count);
          
          setOrders(array)
+         setpage(page_count)
         
        }
    
@@ -65,7 +74,7 @@ import {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Card tables</h3>
+                  <h3 className="mb-0">Orders</h3>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -80,18 +89,6 @@ import {
                   </thead>
                   
                  <tbody>
-
-                        {/* <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{order.id}</td>
-                            <td>{order.customer.name}</td>
-                            <td>{order.product.name}</td>
-                            <td>{order.status}</td>
-                            <td>
-                                <Link to={`/get_product/${order.id}`}> <button type="button" className="btn"><i class="fa fa-edit"></i></button> </Link>
-                                <button className="btn" onClick={deleteProduct(product._id)} ><i class="fa fa-trash"></i> </button>
-                            </td>
-                        </tr> */}
 
                     { orders.map((order, index) => (
                         
@@ -112,15 +109,15 @@ import {
                             <td>
                             <Badge color="" className="badge-dot mr-4">
                                 
-                                {order.status =="pending" &&
+                                {order.status === "pending" &&
                                     <p><i className="bg-danger" />pending</p>
                                 }
 
-                                {order.status =="Delivered" &&
+                                {order.status === "Delivered" &&
                                     <p><i className="bg-success" />Delivered</p>
                                 }
 
-                                {order.status =="Out for delivery" &&
+                                {order.status === "Out for delivery" &&
                                     <p><i className="bg-warning" />Out for delivery</p>
                                 }
 
@@ -129,33 +126,8 @@ import {
                            
 
                             <td className="text-right">
-                            <UncontrolledDropdown>
-                                <DropdownToggle
-                                className="btn-icon-only text-light"
-                                href="#pablo"
-                                role="button"
-                                size="sm"
-                                color=""
-                                onClick={(e) => e.preventDefault()}
-                                >
-                                <i className="fas fa-ellipsis-v" />
-                                </DropdownToggle>
-                                <DropdownMenu className="dropdown-menu-arrow" right>
-                                <DropdownItem
-                                    href="#pablo"
-                                    onClick={(e) => e.preventDefault()}
-                                >
-                                    Edit
-                                </DropdownItem>
-                                <DropdownItem
-                                    href="#pablo"
-                                    onClick={(e) => e.preventDefault()}
-                                >
-                                    Delete
-                                </DropdownItem>
-                              
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
+                          
+                            <Link to={`/get_order/${order.id}`}> <button type="button" className="btn"><i class="fa fa-edit"></i></button> </Link>
                             </td>
                         </tr>
 
@@ -210,6 +182,7 @@ import {
       </>
     );
   };
+
   
   export default Orders;
   

@@ -38,6 +38,7 @@ const Admin = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
+      // console.log(prop.component)
       if (prop.layout === "/admin") {
         return (
           <Route
