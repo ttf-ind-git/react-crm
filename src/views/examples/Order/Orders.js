@@ -35,14 +35,15 @@ import {
 
     const [orders, setOrders] = useState([]);
     const [page, setpage] = useState(1);
+    const [total_pages, setTotalPages] = useState();
 
     useEffect(() => {
-
+        // alert(page)
         async function fetchOrderCount() {
    
          const data = 'Token '+localStorage.getItem('token');
    
-         let response = await fetch('http://127.0.0.1:8000/api/order-list', {
+         let response = await fetch(`http://127.0.0.1:8000/api/order-list/`, {
            method: 'GET',
            headers : {
                'Content-Type': 'application/json',
@@ -56,7 +57,8 @@ import {
          console.log(result.count);
          
          setOrders(array)
-         setpage(page_count)
+        //  setpage(page_count)
+         setTotalPages(page_count)
         
        }
    
@@ -64,6 +66,28 @@ import {
    
     },[]);
 
+    const pageNumber = (page_no) => {
+      alert(page_no)
+    }
+
+    var rows = [];
+    for (var i = 0; i < total_pages; i++) {
+        rows.push(
+          <PaginationItem>
+            <PaginationLink
+              // href='http://127.0.0.1:8000/api/order-list/'
+              onClick={() => pageNumber(i + 1)}
+            >
+              { i + 1 }
+            </PaginationLink>
+          </PaginationItem>
+
+        );
+    }
+
+    console.log(rows)
+
+    
     return (
       <>
         <Header />
@@ -142,7 +166,7 @@ import {
                       className="pagination justify-content-end mb-0"
                       listClassName="justify-content-end mb-0"
                     >
-                      <PaginationItem className="disabled">
+                      <PaginationItem className={`prev ${page === 1 ? 'disabled' : ''}`}>
                         <PaginationLink
                           href="#pablo"
                           onClick={(e) => e.preventDefault()}
@@ -152,16 +176,9 @@ import {
                           <span className="sr-only">Previous</span>
                         </PaginationLink>
                       </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                    
-                    
+                     
+                        { rows }
+
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
