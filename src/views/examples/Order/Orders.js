@@ -30,12 +30,14 @@ import {
 
   import React, { useState, useEffect } from "react";
   import { Link } from 'react-router-dom';
+  import ReactPaginate from 'react-paginate';
   
   const Orders = () => {
 
     const [orders, setOrders] = useState([]);
-    const [page, setpage] = useState(1);
-    const [total_pages, setTotalPages] = useState();
+    const [pageCount, setpageCount] = useState(0);
+
+    let limit = 2;
 
     useEffect(() => {
         // alert(page)
@@ -43,7 +45,7 @@ import {
    
          const data = 'Token '+localStorage.getItem('token');
    
-         let response = await fetch(`http://127.0.0.1:8000/api/order-list/`, {
+         let response = await fetch(`http://127.0.0.1:8000/api/order-list/?page=1`, {
            method: 'GET',
            headers : {
                'Content-Type': 'application/json',
@@ -53,12 +55,11 @@ import {
    
          let result = await response.json();
          let array = result.results;
-         let page_count = result.count
-         console.log(result.count);
+         let page_count = result.count;
+         console.log(result);
          
          setOrders(array)
-        //  setpage(page_count)
-         setTotalPages(page_count)
+         setpageCount(Math.ceil(page_count / limit))
         
        }
    
@@ -66,26 +67,53 @@ import {
    
     },[]);
 
-    const pageNumber = (page_no) => {
-      alert(page_no)
+    const fetchOrder = async (currentPage) => {
+     
+      const token = 'Token '+localStorage.getItem('token');
+   
+      let res = await fetch(`http://127.0.0.1:8000/api/order-list/?page=${currentPage}`, {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+      });
+
+      const data = await res.json();
+      return data;
+
+    };
+
+    const handePageClick = async (data) => {
+      console.log(data.selected + 1)
+
+      let currentPage = data.selected + 1;
+
+      const orderFormServer = await fetchOrder(currentPage);
+      // console.log(orderFormServer)
+    
+      setOrders(orderFormServer.results);
+     
     }
 
-    var rows = [];
-    for (var i = 0; i < total_pages; i++) {
-        rows.push(
-          <PaginationItem>
-            <PaginationLink
-              // href='http://127.0.0.1:8000/api/order-list/'
-              onClick={() => pageNumber(i + 1)}
-            >
-              { i + 1 }
-            </PaginationLink>
-          </PaginationItem>
+    // var rows = [];
+    // for (var i = 0; i < total_pages; i++) {
+    //     rows.push(
+    //       <PaginationItem>
+    //         <PaginationLink
+    //           // href='http://127.0.0.1:8000/api/order-list/'
+    //           onClick={() => pageNumber(i + 1)}
+    //         >
+    //           { i + 1 }
+    //         </PaginationLink>
+    //       </PaginationItem>
 
-        );
-    }
+    //     );
+    // }
 
-    console.log(rows)
+    // console.log(rows)
+
+    // console.log(orders)
 
     
     return (
@@ -162,7 +190,7 @@ import {
                 </Table>
                 <CardFooter className="py-4">
                   <nav aria-label="...">
-                    <Pagination
+                    {/* <Pagination
                       className="pagination justify-content-end mb-0"
                       listClassName="justify-content-end mb-0"
                     >
@@ -188,7 +216,28 @@ import {
                           <span className="sr-only">Next</span>
                         </PaginationLink>
                       </PaginationItem>
-                    </Pagination>
+                    </Pagination> */}
+
+                  <ReactPaginate
+                    previousLabel={"<<"}
+                    nextLabel={">>"}
+                    breakLabel={"..."}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={3}
+                    onPageChange={handePageClick}
+                    containerClassName={"pagination justify-content-end"}
+                    pageClassName={"page-item"}
+                    pageLinkClassName={"page-link"}
+                    previousClassName={"page-item"}
+                    previousLinkClassName={"page-link"}
+                    nextClassName={"page-item"}
+                    nextLinkClassName={"page-link"}
+                    breakClassName={"page-item"}
+                    breakLinkClassName={"page-link"}
+                    activeClassName={"active"}
+                  />
+
                   </nav>
                 </CardFooter>
               </Card>
