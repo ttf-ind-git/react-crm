@@ -179,7 +179,7 @@ import {
 
                             <td className="text-right">
                           
-                            <Link to={`/get_order/${order.id}`}> <button type="button" className="btn"><i class="fa fa-edit"></i></button> </Link>
+                            <Link to={`/admin/get_order/${order.id}`}> <button type="button" className="btn"><i class="fa fa-edit"></i></button> </Link>
                             </td>
                         </tr>
 

@@ -26,6 +26,8 @@ import Icons from "views/examples/Icons.js";
 import Orders from "views/examples/Order/Orders.js";
 import Update_Order from "views/examples/Order/Update.js";
 import Products from "views/examples/Product/Products.js";
+import Add_Product from "views/examples/Product/Add.js";
+import Update_Product from "views/examples/Product/Update.js";
 
 var routes = [
   {
@@ -34,6 +36,7 @@ var routes = [
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin",
+    show:true,
   },
   {
     path: "/orders",
@@ -41,6 +44,15 @@ var routes = [
     icon: "fas fa-truck text-red",
     component: Orders,
     layout: "/admin",
+    show:true,
+  },
+  {
+    path: "/get_order/:id",
+    name: "Get Order",
+    icon: "fa fa-shopping-basket text-yellow",
+    component: Update_Order,
+    layout: "/admin",
+    show:false,
   },
   {
     path: "/products",
@@ -48,6 +60,23 @@ var routes = [
     icon: "fa fa-shopping-basket text-yellow",
     component: Products,
     layout: "/admin",
+    show:true,
+  },
+  {
+    path: "/add_product",
+    name: "Add Product",
+    icon: "fa fa-shopping-basket text-yellow",
+    component: Add_Product,
+    layout: "/admin",
+    show:false,
+  },
+  {
+    path: "/get_product/:id",
+    name: "Get Product",
+    icon: "fa fa-shopping-basket text-yellow",
+    component: Update_Product,
+    layout: "/admin",
+    show:false,
   },
   {
     path: "/icons",
@@ -55,6 +84,7 @@ var routes = [
     icon: "ni ni-planet text-blue",
     component: Icons,
     layout: "/admin",
+    show:true,
   },
   {
     path: "/maps",
@@ -62,6 +92,7 @@ var routes = [
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
+    show:true,
   },
   {
     path: "/user-profile",
@@ -69,6 +100,7 @@ var routes = [
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin",
+    show:true,
   },
   {
     path: "/tables",
@@ -76,6 +108,7 @@ var routes = [
     icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
     layout: "/admin",
+    show:true,
   },
   {
     path: "/login",
@@ -83,6 +116,7 @@ var routes = [
     icon: "ni ni-key-25 text-info",
     component: Login,
     layout: "/auth",
+    show:true,
   },
   {
     path: "/register",
@@ -90,6 +124,7 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
+    show:true,
   },
  
 ];

@@ -37,7 +37,7 @@ import {
     const [products, setProducts] = useState([]);
     const [pageCount, setpageCount] = useState(0);
 
-    let limit = 1;
+    let limit = 2;
 
     useEffect(() => {
 
@@ -106,9 +106,19 @@ import {
           <Row>
             <div className="col">
               <Card className="shadow">
-                <CardHeader className="border-0">
-                  <h3 className="mb-0">Products</h3>
-                </CardHeader>
+              
+                <CardHeader className="bg-white border-0">
+                <Row className="align-items-center">
+                  <Col xs="8">
+                    <h3 className="mb-0">Products</h3>
+                  </Col>
+                  <Col className="text-right" xs="4">
+                   
+                    <Link to={`/admin/add_product`}> <button type="button" className="btn-sm btn-info">Add</button> </Link>
+                  </Col>
+                </Row>
+              </CardHeader>
+
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
@@ -144,7 +154,7 @@ import {
                             <td>{product.orders.length}</td>
                             <td className="text-right">
                           
-                            <Link to={`/get_product/${product.id}`}> <button type="button" className="btn"><i class="fa fa-edit"></i></button> </Link>
+                            <Link to={`/admin/get_product/${product.id}`}> <button type="button" className="btn"><i class="fa fa-edit"></i></button> </Link>
                             </td>
                         </tr>
 

@@ -33,76 +33,52 @@ import {
   import Sidebar from "components/Sidebar/Sidebar.js";
   import routes from "routes.js";
   import { useHistory } from 'react-router';
+  import AdminNavbar from "components/Navbars/AdminNavbar";
+  import AdminLayout from "layouts/Admin.js";
+  import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+  import AdminFooter from "components/Footers/AdminFooter.js";
   
-  const Update_Product = (props) => {
+  const Add_Product = (props) => {
 
-    const history = useHistory();
+    const history = useHistory();   
+    const mainContent = React.useRef(null);
 
-    let productId = props.match.params.id
-    console.log(productId)
-   
-    let [product, setProduct] = useState({ 
+    const [values, setProduct] = useState({ 
         name: '', category: '', price: '' 
     });
 
     const set = (name) => {
+      
         return ({ target: { value } }) => {
             setProduct((oldValues) => ({ ...oldValues, [name]: value }));
         };
     };
 
-    useEffect(() => {
-
-        getProduct()
-   
-    },[productId]);
-
-    let getProduct = async () =>{
-        
-        const data = 'Token '+localStorage.getItem('token');
-      
-        let response = await fetch(`http://127.0.0.1:8000/api/product-detail/${productId}/`, {
-          method: 'GET',
-          headers : {
-              'Content-Type': 'application/json',
-              'Authorization': data
-          }
-        });
-
-        let result = await response.json();
-
-        console.log(result)
-
-        setProduct({
-            name: result.name, category: result.category, price: result.price 
-        });
-
-    }
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent default submission
        
         try {
-          await updateFormData();
-          alert('Product updated successfully!');
+          await AddFormData();
+          alert('Product added successfully!');
           setProduct({
             name: '', category: '', price: '' 
           });
           history.push("/admin/products");
         } catch (e) {
-          alert(`Updation failed! ${e.message}`);
+          alert(`Creation failed! ${e.message}`);
         }
     }
 
-    const updateFormData = async () => {
+    const AddFormData = async () => {
         const data = 'Token '+localStorage.getItem('token');
-        const response = await fetch(`http://127.0.0.1:8000/api/product-update/${productId}/`, {
-            method: 'PUT',
+        const response = await fetch(`http://127.0.0.1:8000/api/product-add/`, {
+            method: 'POST',
             headers : {
                 'Content-Type': 'application/json',
                 'Authorization': data
             },
-            body: JSON.stringify(product)
+            body: JSON.stringify(values)
         });
         if (response.status !== 200) {
           throw new Error(`Request failed: ${response.status}`); 
@@ -110,9 +86,38 @@ import {
         // console.log(JSON.stringify(product))
     }
 
+    const getBrandText = (path) => {
+        for (let i = 0; i < routes.length; i++) {
+          if (
+            props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
+            -1
+          ) {
+            return routes[i].name;
+          }
+        }
+        return "Add Product";
+      };
+
+      const getRoutes = (routes) => {
+        return routes.map((prop, key) => {
+          // console.log(prop.component)
+          if (prop.layout === "/admin") {
+            return (
+              <Route
+                path={prop.layout + prop.path}
+                component={prop.component}
+                key={key}
+              />
+            );
+          } else {
+            return null;
+          }
+        });
+      };
+
     return (
         <>
-      
+
         <Header />
         <Container className="mt--7" fluid>
         <Row>
@@ -122,7 +127,7 @@ import {
             <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Product Update</h3>
+                    <h3 className="mb-0">Add Product</h3>
                   </Col>
                   <Col className="text-right" xs="4">
                    
@@ -131,7 +136,7 @@ import {
                 </Row>
               </CardHeader>
               <CardBody>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} >
                 
                   <div className="pl-lg-4">
                     <Row>
@@ -149,7 +154,7 @@ import {
                             id="input-name"
                             placeholder="Name"
                             type="text"
-                            value={product.name} 
+                            value={values.name}
                             onChange={set("name")}
                           />
                         </FormGroup>
@@ -162,18 +167,10 @@ import {
                           >
                             Category
                           </label>
-                          {/* <Input
-                            className="form-control-alternative"
-                            id="input-category"
-                            placeholder="Category"
-                            type="text"
-                            value={product.category} 
-                            onChange={set("category")}
-                          /> */}
-
                             <select className="form-control" id="input-category" onChange={set("category")} >
-                                <option value={'Indoor'} selected={product.category === 'Indoor'} >Indoor</option>
-                                <option value={'Out Door'} selected={product.category === 'Out Door'} >Out Door</option>
+                                <option value={""} >Select</option>
+                                <option value={'Indoor'} >Indoor</option>
+                                <option value={'Out Door'} >Out Door</option>
                             </select>
 
                         </FormGroup>
@@ -193,7 +190,7 @@ import {
                             id="input-price"
                             placeholder="Price"
                             type="number"
-                            value={product.price}
+                            value={values.price}
                             onChange={set("price")}
                           />
                         </FormGroup>
@@ -201,7 +198,7 @@ import {
 
                       <div className="text-center flex-auto">
                         <Button className="mt-4" color="primary" type="submit">
-                        Update
+                        Add
                         </Button>
                     </div>
 
@@ -215,10 +212,11 @@ import {
           </Col>
         </Row>
       </Container>
+       
         </>
       );
       
   };
 
-  export default Update_Product;
+  export default Add_Product;
   

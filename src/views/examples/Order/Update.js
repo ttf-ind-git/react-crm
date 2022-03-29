@@ -65,16 +65,7 @@ import {
 
     return (
         <>
-        {/* <Sidebar
-            {...props}
-            routes={routes}
-            logo={{
-            innerLink: "/admin/index",
-            imgSrc: require("../../../assets/img/brand/argon-react.png").default,
-            imgAlt: "...",
-            }} 
-        /> */}
-
+       
         <Header />
         <Container className="mt--7" fluid>
         <Row>
