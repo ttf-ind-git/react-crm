@@ -25,9 +25,13 @@ import Icons from "views/examples/Icons.js";
 
 import Orders from "views/examples/Order/Orders.js";
 import Update_Order from "views/examples/Order/Update.js";
+
 import Products from "views/examples/Product/Products.js";
 import Add_Product from "views/examples/Product/Add.js";
 import Update_Product from "views/examples/Product/Update.js";
+
+import Customers from "views/examples/Customer/Customers";
+import Add_Customer from "views/examples/Customer/Add.js";
 
 var routes = [
   {
@@ -75,6 +79,22 @@ var routes = [
     name: "Get Product",
     icon: "fa fa-shopping-basket text-yellow",
     component: Update_Product,
+    layout: "/admin",
+    show:false,
+  },
+  {
+    path: "/customers",
+    name: "Customers",
+    icon: "fas fa-user text-info",
+    component: Customers,
+    layout: "/admin",
+    show:true,
+  },
+  {
+    path: "/add_customer",
+    name: "Add Customer",
+    icon: "fa fa-shopping-basket text-yellow",
+    component: Add_Customer,
     layout: "/admin",
     show:false,
   },

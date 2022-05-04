@@ -38,27 +38,21 @@ import {
   import { useLocation, Route, Switch, Redirect } from "react-router-dom";
   import AdminFooter from "components/Footers/AdminFooter.js";
   
-  const Add_Product = (props) => {
+  const Add_Customer = (props) => {
 
     const history = useHistory();   
     const mainContent = React.useRef(null);
 
-    const [values, setProduct] = useState({ 
-        name: '', category: '', price: '' 
+    const [values, setCustomer] = useState({ 
+        username: '', first_name: '', last_name: '', email: '', phone: '' 
     });
-
-    const [image, setImage] = useState();
 
     const set = (name) => {
       
         return ({ target: { value } }) => {
-            setProduct((oldValues) => ({ ...oldValues, [name]: value }));
+            setCustomer((oldValues) => ({ ...oldValues, [name]: value }));
         };
     };
-
-    // const selectFile = (event) => {
-    //   setSelectedFiles(event.target.files);
-    // };
 
 
     const handleSubmit = async (event) => {
@@ -66,11 +60,11 @@ import {
        
         try {
           await AddFormData();
-          alert('Product added successfully!');
-          setProduct({
-            name: '', category: '', price: '' 
+          alert('Customer added successfully!');
+          setCustomer({
+            username: '', first_name: '', last_name: '', email: '', phone: '' 
           });
-          history.push("/admin/products");
+          history.push("/admin/customers");
         } catch (e) {
           alert(`Creation failed! ${e.message}`);
         }
@@ -78,54 +72,20 @@ import {
 
     const AddFormData = async () => {
         const data = 'Token '+localStorage.getItem('token');
-
-        let formData = new FormData();
-     
-        formData.append('name', values.name);
-        formData.append('category', values.category);
-        formData.append('price', values.price);
-        formData.append('image', image, image.name );
-
-        fetch('http://127.0.0.1:8000/api/product-add/', {
+        const response = await fetch(`http://127.0.0.1:8000/api/customer-add/`, {
             method: 'POST',
             headers : {
+                'Content-Type': 'application/json',
                 'Authorization': data
             },
-            body: formData
-        })
-        .then(res => console.log(res))
-        .catch(error => console.log(error))
-         
+            body: JSON.stringify(values)
+        });
+        if (response.status !== 200) {
+          throw new Error(`Request failed: ${response.status}`); 
+        }
+        // console.log(JSON.stringify(product))
     }
 
-    const getBrandText = (path) => {
-        for (let i = 0; i < routes.length; i++) {
-          if (
-            props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-            -1
-          ) {
-            return routes[i].name;
-          }
-        }
-        return "Add Product";
-      };
-
-      const getRoutes = (routes) => {
-        return routes.map((prop, key) => {
-          // console.log(prop.component)
-          if (prop.layout === "/admin") {
-            return (
-              <Route
-                path={prop.layout + prop.path}
-                component={prop.component}
-                key={key}
-              />
-            );
-          } else {
-            return null;
-          }
-        });
-      };
 
     return (
         <>
@@ -139,11 +99,11 @@ import {
             <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Add Product</h3>
+                    <h3 className="mb-0">Add Customer</h3>
                   </Col>
                   <Col className="text-right" xs="4">
                    
-                    <Link to={`/admin/products`}> <button type="button" className="btn-sm btn-info">Back</button> </Link>
+                    <Link to={`/admin/customers`}> <button type="button" className="btn-sm btn-info">Back</button> </Link>
                   </Col>
                 </Row>
               </CardHeader>
@@ -152,39 +112,81 @@ import {
                 
                   <div className="pl-lg-4">
                     <Row>
+                    <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-email"
+                          >
+                            Username
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                           
+                            id="input-username"
+                            placeholder="Username"
+                            type="text"
+                            value={values.username}
+                            onChange={set("username")}
+                          />
+
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-first_name"
+                          >
+                           First Name
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                           
+                            id="input-name"
+                            placeholder="First Name"
+                            type="text"
+                            value={values.first_name}
+                            onChange={set("first_name")}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-last_name"
+                          >
+                           Last Name
+                          </label>
+                          <Input
+                            className="form-control-alternative"
+                           
+                            id="input-name"
+                            placeholder="Last Name"
+                            type="text"
+                            value={values.last_name}
+                            onChange={set("last_name")}
+                          />
+                        </FormGroup>
+                      </Col>
                       <Col lg="4">
                         <FormGroup>
                           <label
                             className="form-control-label"
                             htmlFor="input-username"
                           >
-                            Product Name
+                            Email
                           </label>
                           <Input
                             className="form-control-alternative"
                            
-                            id="input-name"
-                            placeholder="Name"
-                            type="text"
-                            value={values.name}
-                            onChange={set("name")}
+                            id="input-email"
+                            placeholder="Email"
+                            type="email"
+                            value={values.email}
+                            onChange={set("email")}
                           />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-email"
-                          >
-                            Category
-                          </label>
-                            <select className="form-control" id="input-category" onChange={set("category")} >
-                                <option value={""} >Select</option>
-                                <option value={'Indoor'} >Indoor</option>
-                                <option value={'Out Door'} >Out Door</option>
-                            </select>
-
                         </FormGroup>
                       </Col>
 
@@ -194,44 +196,26 @@ import {
                             className="form-control-label"
                             htmlFor="input-first-name"
                           >
-                            Price
+                            Phone
                           </label>
                           <Input
                             className="form-control-alternative"
                            
-                            id="input-price"
-                            placeholder="Price"
+                            id="input-phone"
+                            placeholder="Phone"
                             type="number"
-                            value={values.price}
-                            onChange={set("price")}
+                            value={values.phone}
+                            onChange={set("phone")}
                           />
                         </FormGroup>
                       </Col>
 
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-first-name"
-                          >
-                            Image
-                          </label>
-
-                          <input type="file"
-                            id="image"
-                            className="form-control"
-                            accept="image/png, image/jpeg"  onChange={ (evt) => setImage(evt.target.files[0])} required 
-                        />
-                         
-                        </FormGroup>
-                      </Col>
-
-                      <div className="text-center flex-auto">
-                        <Button className="mt-4" color="primary" type="submit">
-                        Add
-                        </Button>
-                    </div>
-
+                        <div className="text-center flex-auto">
+                          <Button className="mt-4" color="primary" type="submit">
+                          Add
+                          </Button>
+                        </div>
+                      
                     </Row>
                    
                   </div>
@@ -248,5 +232,5 @@ import {
       
   };
 
-  export default Add_Product;
+  export default Add_Customer;
   

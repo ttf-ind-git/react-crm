@@ -1,0 +1,17 @@
+
+React js is a javascript library for building user interface and helps to create SPA. React allows us to create reusability UI components.
+
+React uses virtual DOM which is a javascript object. virtual DOM is a object representation of actual DOM. 
+
+React fully based on component we can reuse it.
+
+React follows JSX(javascript XML)
+
+React components:
+    Class components
+    Functional components
+
+Create React App:
+    NPX CREATE-REACT-APP <APP_NAME>
+
+index.js is starting point of the application.
