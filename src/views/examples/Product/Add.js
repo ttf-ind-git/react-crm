@@ -61,22 +61,24 @@ import {
     // };
 
 
-    const handleSubmit = async (event) => {
-        event.preventDefault(); // Prevent default submission
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault(); // Prevent default submission
        
-        try {
-          await AddFormData();
-          alert('Product added successfully!');
-          setProduct({
-            name: '', category: '', price: '' 
-          });
-          history.push("/admin/products");
-        } catch (e) {
-          alert(`Creation failed! ${e.message}`);
-        }
-    }
+    //     try {
+    //       await AddFormData();
+    //       alert('Product added successfully!');
+    //       setProduct({
+    //         name: '', category: '', price: '' 
+    //       });
+    //       history.push("/admin/products");
+    //     } catch (e) {
+    //       alert(`Creation failed! ${e.message}`);
+    //     }
+    // }
 
-    const AddFormData = async () => {
+    const AddFormData = async (event) => {
+        event.preventDefault(); // Prevent default submission
+        
         const data = 'Token '+localStorage.getItem('token');
 
         let formData = new FormData();
@@ -95,6 +97,12 @@ import {
         })
         .then(res => console.log(res))
         .catch(error => console.log(error))
+
+        alert('Product added successfully!');
+        setProduct({
+          name: '', category: '', price: '' 
+        });
+        history.push("/admin/products");
          
     }
 
@@ -148,7 +156,7 @@ import {
                 </Row>
               </CardHeader>
               <CardBody>
-                <Form onSubmit={handleSubmit} >
+                <Form onSubmit={AddFormData} >
                 
                   <div className="pl-lg-4">
                     <Row>
